@@ -1,5 +1,5 @@
 {
-    "name": "weluse/mailjet-component",
+    "name": "weluse/yii2-mailjet",
     "description": "Mailjet client",
     "type": "library",
     "require": {
