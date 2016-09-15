@@ -7,11 +7,11 @@ https://goo.gl/YNWTwd
 ## Install
 
 ```
-composer require weluse/mailjet-compontent
+composer require weluse/yii2-mailjet
 ```
 or add it to your composer.json in the require section
 ```
-"weluse/mailjet-compontent": "*",
+"weluse/yii2-mailjet": "*",
 ```
 
 ## Setup
