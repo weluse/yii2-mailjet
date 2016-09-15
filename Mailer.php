@@ -44,7 +44,7 @@ class Mailer extends BaseMailer
    /**
     * @var string message default class name.
     */
-    public $messageClass = 'app\components\mailjet\Message';
+    public $messageClass = 'weluse\mailjet\Message';
 
    /**
     *  readonly
