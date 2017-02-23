@@ -147,6 +147,7 @@ class Mailer extends BaseMailer
 
     private function _getRecipients($message)
     {
+        $to = [];
         foreach ($message->to as $email => $name) {
 
             $newRecipient = '';
@@ -159,10 +160,14 @@ class Mailer extends BaseMailer
                 $newRecipient .= " <$email>";
             }
 
-            $recipients['To'] .= $newRecipient;
+            $to[] = $newRecipient;
+            
         }
+        $recipients['To'] = implode(',', $to);
 
         if (!empty($message->cc)) {
+
+          $cc = [];
           foreach ($message->cc as $email => $name) {
 
               $newRecipient = '';
@@ -175,11 +180,15 @@ class Mailer extends BaseMailer
                   $newRecipient .= " <$email>";
               }
 
-              $recipients['Cc'] .= $newRecipient;
+              $cc[] = $newRecipient;
+
           }
+          $recipients['Cc'] = implode(',', $cc);
         }
 
         if (!empty($message->bcc)) {
+
+          $bcc = [];
           foreach ($message->bcc as $email => $name) {
 
               $newRecipient = '';
@@ -192,8 +201,10 @@ class Mailer extends BaseMailer
                   $newRecipient .= " <$email>";
               }
 
-              $recipients['Bcc'] .= $newRecipient;
+              $bcc[] = $newRecipient;
+
           }
+          $recipients['Bcc'] = implode(',', $bcc);
         }
 
         return $recipients;
