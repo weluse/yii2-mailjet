@@ -130,35 +130,73 @@ class Mailer extends BaseMailer
      */
     protected function sendMessage($message)
     {
-
-        $recipients = [];
-
-        foreach ($message->to as $email => $name) {
-
-            $newRecipient = [];
-
-            if (!empty($email)) {
-                $newRecipient['Email'] = $email;
-            }
-
-            if (!empty($name)) {
-                $newRecipient['Name'] = $name;
-            }
-
-            $recipients[] = $newRecipient;
-        }
-
         $body = [
             'Subject' => $message->subject,
             'Text-part' => $message->textBody,
             'Html-part' => $message->htmlBody,
-            'Recipients' => $recipients
         ];
 
+        $recipients = $this->_getRecipients($message);
+
         $body = array_merge($message->from, $body);
+        $body = array_merge($recipients, $body);
 
         $response = $this->_mailjet->post(Resources::$Email, ['body' => $body]);
         return $response->success();
+    }
+
+    private function _getRecipients($message)
+    {
+        foreach ($message->to as $email => $name) {
+
+            $newRecipient = '';
+
+            if (!empty($name)) {
+                $newRecipient = $name;
+            }
+
+            if (!empty($email)) {
+                $newRecipient .= " <$email>";
+            }
+
+            $recipients['To'] .= $newRecipient;
+        }
+
+        if (!empty($message->cc)) {
+          foreach ($message->cc as $email => $name) {
+
+              $newRecipient = '';
+
+              if (!empty($name)) {
+                  $newRecipient = $name;
+              }
+
+              if (!empty($email)) {
+                  $newRecipient .= " <$email>";
+              }
+
+              $recipients['Cc'] .= $newRecipient;
+          }
+        }
+
+        if (!empty($message->bcc)) {
+          foreach ($message->bcc as $email => $name) {
+
+              $newRecipient = '';
+
+              if (!empty($name)) {
+                  $newRecipient = $name;
+              }
+
+              if (!empty($email)) {
+                  $newRecipient .= " <$email>";
+              }
+
+              $recipients['Bcc'] .= $newRecipient;
+          }
+        }
+
+        return $recipients;
     }
 
     public function setTracking($tracking)
