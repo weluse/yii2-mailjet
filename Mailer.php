@@ -158,6 +158,7 @@ class Mailer extends BaseMailer
         $body = array_merge($message->from, $body);
 
         $response = $this->_mailjet->post(Resources::$Email, ['body' => $body]);
+        $this->_response = $response;
         return $response->success();
     }
 
