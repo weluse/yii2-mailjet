@@ -153,7 +153,6 @@ class Mailer extends BaseMailer
             'Text-part' => $message->textBody,
             'Html-part' => $message->htmlBody,
             'Recipients' => $recipients,
-            'Headers' => []
         ];
 
         //Adds Reply-To to header
