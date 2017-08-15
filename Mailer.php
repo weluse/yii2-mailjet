@@ -152,12 +152,19 @@ class Mailer extends BaseMailer
             'Subject' => $message->subject,
             'Text-part' => $message->textBody,
             'Html-part' => $message->htmlBody,
-            'Recipients' => $recipients
+            'Recipients' => $recipients,
+            'Headers' => []
         ];
+
+        //Adds Reply-To to header
+        if(!empty($message->replyTo)){
+            $body['Headers']['Reply-to'] = $message->replyTo;
+        }
 
         $body = array_merge($message->from, $body);
 
         $response = $this->_mailjet->post(Resources::$Email, ['body' => $body]);
+        $this->_response = $response;
         return $response->success();
     }
 
