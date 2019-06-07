@@ -170,12 +170,6 @@ class Mailer extends BaseMailer
 
         $response = $this->_mailjet->post(Resources::$Email, ['body' => $body]);
         $this->_response = $response;
-
-        var_dump('Response from Mailjet API: ' . $response->getStatus() .' - '. $response->getReasonPhrase() . ' - ' . serialize($response->getData()));
-        echo "<hr>"; var_dump($body); echo "<hr>";
-        exit;
-
-
         return $response->success();
     }
 
