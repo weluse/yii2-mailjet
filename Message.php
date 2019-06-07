@@ -31,6 +31,10 @@ class Message extends BaseMessage {
 
     private $_htmlBody;
 
+    private $_attachments;
+
+    private $_inline_attachments;
+
     /**
      * @inheritdoc
      */
@@ -181,28 +185,54 @@ class Message extends BaseMessage {
     * @inheritdoc
     */
     public function attach($fileName, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'ContentType' => isset($options['contentType']) ? $options['contentType'] : \yii\helpers\FileHelper::getMimeType($fileName),
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
+            'Base64Content' => base64_encode(file_get_contents($fileName)),
+        ];
+        $this->_attachments[] = $attachment;
+        return $this;
     }
 
     /**
     * @inheritdoc
     */
     public function attachContent($content, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'ContentType' => isset($options['contentType']) ? $options['contentType'] : 'text/plain',
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
+            'Base64Content' => base64_encode($content),
+        ];
+        $this->_attachments[] = $attachment;
+        return $this;
     }
 
     /**
     * @inheritdoc
     */
     public function embed($fileName, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'ContentType' => isset($options['contentType']) ? $options['contentType'] : \yii\helpers\FileHelper::getMimeType($fileName),
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
+            'ContentId' => isset($options['id']) ? $options['id'] : crc32(basename($fileName)),
+            'Base64Content' => base64_encode(file_get_contents($fileName)),
+        ];
+        $this->_inline_attachments[] = $attachment;
+        return $attachment['ContentId'];
     }
 
     /**
     * @inheritdoc
     */
     public function embedContent($content, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'ContentType' => isset($options['contentType']) ? $options['contentType'] : 'text/plain',
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
+            'ContentId' => isset($options['id']) ? $options['id'] : (isset($options['fileName']) ? crc32($options['fileName']) : crc32(rand(1000,9999).time()) ),
+            'Base64Content' => base64_encode($content),
+        ];
+        $this->_inline_attachments[] = $attachment;
+        return $attachment['ContentId'];
     }
 
     /**
@@ -214,4 +244,19 @@ class Message extends BaseMessage {
             . $this->getTextBody();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAttachments()
+    {
+        return $this->_attachments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInlineAttachments()
+    {
+        return $this->_inline_attachments;
+    }
 }

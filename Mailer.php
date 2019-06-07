@@ -154,6 +154,12 @@ class Mailer extends BaseMailer
             'Html-part' => $message->htmlBody,
             'Recipients' => $recipients,
         ];
+        if ($message->attachments) {
+            $body['Attachments'] = $message->attachments;
+        }
+        if ($message->inlineAttachments) {
+            $body['InlinedAttachments'] = $message->inlineAttachments;
+        }
 
         //Adds Reply-To to header
         if(!empty($message->replyTo)){
