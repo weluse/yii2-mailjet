@@ -186,9 +186,9 @@ class Message extends BaseMessage {
     */
     public function attach($fileName, array $options = []) {
         $attachment = [
-            'ContentType' => isset($options['contentType']) ? $options['contentType'] : \yii\helpers\FileHelper::getMimeType($fileName),
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : \yii\helpers\FileHelper::getMimeType($fileName),
             'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
-            'Base64Content' => base64_encode(file_get_contents($fileName)),
+            'content' => base64_encode(file_get_contents($fileName)),
         ];
         $this->_attachments[] = $attachment;
         return $this;
@@ -199,9 +199,9 @@ class Message extends BaseMessage {
     */
     public function attachContent($content, array $options = []) {
         $attachment = [
-            'ContentType' => isset($options['contentType']) ? $options['contentType'] : 'text/plain',
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : 'text/plain',
             'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
-            'Base64Content' => base64_encode($content),
+            'content' => base64_encode($content),
         ];
         $this->_attachments[] = $attachment;
         return $this;
@@ -212,13 +212,12 @@ class Message extends BaseMessage {
     */
     public function embed($fileName, array $options = []) {
         $attachment = [
-            'ContentType' => isset($options['contentType']) ? $options['contentType'] : \yii\helpers\FileHelper::getMimeType($fileName),
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : \yii\helpers\FileHelper::getMimeType($fileName),
             'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
-            'ContentId' => isset($options['id']) ? $options['id'] : crc32(basename($fileName)),
-            'Base64Content' => base64_encode(file_get_contents($fileName)),
+            'content' => base64_encode(file_get_contents($fileName)),
         ];
         $this->_inline_attachments[] = $attachment;
-        return $attachment['ContentId'];
+        return $attachment['Filename'];
     }
 
     /**
@@ -226,13 +225,12 @@ class Message extends BaseMessage {
     */
     public function embedContent($content, array $options = []) {
         $attachment = [
-            'ContentType' => isset($options['contentType']) ? $options['contentType'] : 'text/plain',
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : 'text/plain',
             'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
-            'ContentId' => isset($options['id']) ? $options['id'] : (isset($options['fileName']) ? crc32($options['fileName']) : crc32(rand(1000,9999).time()) ),
-            'Base64Content' => base64_encode($content),
+            'content' => base64_encode($content),
         ];
         $this->_inline_attachments[] = $attachment;
-        return $attachment['ContentId'];
+        return $attachment['Filename'];
     }
 
     /**
