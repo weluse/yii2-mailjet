@@ -170,7 +170,7 @@ class Mailer extends BaseMailer
 
         $response = $this->_mailjet->post(Resources::$Email, ['body' => $body]);
         $this->_response = $response;
-        Yii::debug('Response from Mailjet API: ' . serialize($response));
+        \Yii::debug('Response from Mailjet API: ' . $response->getReasonPhrase() . ' - ' . serialize($response->getData()));
         return $response->success();
     }
 
