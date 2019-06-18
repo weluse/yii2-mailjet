@@ -131,29 +131,48 @@ class Mailer extends BaseMailer
     protected function sendMessage($message)
     {
 
-        $recipients = [];
+        $to = $cc = $bcc = [];
 
         foreach ($message->to as $email => $name) {
-
-            $newRecipient = [];
-
-            if (!empty($email)) {
-                $newRecipient['Email'] = $email;
-            }
-
+            $address = '<' . $email . '>';
             if (!empty($name)) {
-                $newRecipient['Name'] = $name;
+                $address = '"' . $name . '" ' . $address;
             }
-
-            $recipients[] = $newRecipient;
+            $to[] = $address;
         }
+
+        foreach ($message->cc as $email => $name) {
+            $address = '<' . $email . '>';
+            if (!empty($name)) {
+                $address = '"' . $name . '" ' . $address;
+            }
+            $cc[] = $address;
+        }
+
+
+        foreach ($message->bcc as $email => $name) {
+            $address = '<' . $email . '>';
+            if (!empty($name)) {
+                $address = '"' . $name . '" ' . $address;
+            }
+            $bcc[] = $address;
+        }
+
 
         $body = [
             'Subject' => $message->subject,
             'Text-part' => $message->textBody,
             'Html-part' => $message->htmlBody,
-            'Recipients' => $recipients,
+            'To' => $to,
         ];
+
+        if ($cc) {
+            $body['Cc'] = $cc;
+        }
+        if ($bcc) {
+            $body['Bcc'] = $bcc;
+        }
+
         if ($message->attachments) {
             $body['Attachments'] = $message->attachments;
         }

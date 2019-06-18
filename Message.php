@@ -117,6 +117,9 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setCc($cc) {
+        if (!is_array($cc)){
+            $cc = [$cc => ''];
+        }
         $this->_cc = $cc;
         return $this;
     }
@@ -132,6 +135,9 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setBcc($bcc) {
+        if (!is_array($bcc)){
+            $bcc = [$bcc => ''];
+        }
         $this->_bcc = $bcc;
         return $this;
     }
