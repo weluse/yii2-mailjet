@@ -17,13 +17,13 @@ class Message extends BaseMessage {
 
     private $_from;
 
-    private $_to;
+    private $_to = [];
 
     private $_replyTo;
 
-    private $_cc;
+    private $_cc = [];
 
-    private $_bcc;
+    private $_bcc = [];
 
     private $_subject;
 
