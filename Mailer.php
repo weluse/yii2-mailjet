@@ -163,14 +163,14 @@ class Mailer extends BaseMailer
             'Subject' => $message->subject,
             'Text-part' => $message->textBody,
             'Html-part' => $message->htmlBody,
-            'To' => $to,
+            'To' => join(', ',$to),
         ];
 
         if ($cc) {
-            $body['Cc'] = $cc;
+            $body['Cc'] = join(', ',$cc);
         }
         if ($bcc) {
-            $body['Bcc'] = $bcc;
+            $body['Bcc'] = join(', ', $bcc);
         }
 
         if ($message->attachments) {
