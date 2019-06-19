@@ -9,13 +9,17 @@ https://goo.gl/YNWTwd
 ```
 composer require weluse/yii2-mailjet
 ```
+
 or add it to your composer.json in the require section
+
 ```
 "weluse/yii2-mailjet": "*",
 ```
 
 ## Setup
+
 add/replace this in your config under the components key.
+
 ```
 'components' => [
   'mailer' => [
@@ -25,7 +29,6 @@ add/replace this in your config under the components key.
   ],
 ],
 ```
-
 
 ## Example
 
@@ -37,8 +40,29 @@ Yii::$app->mailer->compose('signup', ['user' => $user])
 ->send();
 ```
 
+## Attachment example
+
+```
+// Mail with attachment from string via Message::attachContent()
+Yii::$app->mailer->compose('view-name')
+->setSubject('Mail with attachment from content')
+->attachContent("This is the attachment content", ['fileName' => 'attachment.txt', 'contentType' => 'text/plain'])
+->setTo('info@example.com')
+->send();
+
+// Mail with attachment from file via Message::attach()
+$filePath = ... // a file path here;
+Yii::$app->mailer->compose('view-name')
+->setSubject('Mail with attachment from content')
+->attach($filePath)
+->setTo('info@example.com')
+->send();
+```
+
 ## Setup Event Tracking
+
 Write the tracking item to the mailer config.
+
 ```
 'components' => [
   'mailer' => [
@@ -51,7 +75,9 @@ Write the tracking item to the mailer config.
   ],
 ],
 ```
+
 To activate this url you must run this command at one time.
+
 ```
 Yii::$app->mailer->activateTracking();
 ```
