@@ -177,11 +177,11 @@ class Mailer extends BaseMailer
             $body['Attachments'] = $message->attachments;
         }
         if ($message->inlineAttachments) {
-            $body['InlinedAttachments'] = $message->inlineAttachments;
+            $body['Inline_attachments'] = $message->inlineAttachments;
         }
 
         //Adds Reply-To to header
-        if(!empty($message->replyTo)){
+        if(!empty($message->replyTo)) {
             $body['Headers']['Reply-to'] = $message->replyTo;
         }
 

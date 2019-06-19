@@ -84,7 +84,7 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setTo($to) {
-        if (!is_array($to)){
+        if (!is_array($to)) {
             $to = [$to => ''];
         }
         $this->_to = $to;
@@ -117,7 +117,7 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setCc($cc) {
-        if (!is_array($cc)){
+        if (!is_array($cc)) {
             $cc = [$cc => ''];
         }
         $this->_cc = $cc;
