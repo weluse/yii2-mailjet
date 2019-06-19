@@ -223,7 +223,7 @@ class Message extends BaseMessage {
             'content' => base64_encode(file_get_contents($fileName)),
         ];
         $this->_inline_attachments[] = $attachment;
-        return $attachment['Filename'];
+        return 'cid:' . $attachment['Filename'];
     }
 
     /**
@@ -236,7 +236,7 @@ class Message extends BaseMessage {
             'content' => base64_encode($content),
         ];
         $this->_inline_attachments[] = $attachment;
-        return $attachment['Filename'];
+        return 'cid:' . $attachment['Filename'];
     }
 
     /**
