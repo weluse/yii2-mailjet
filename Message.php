@@ -17,19 +17,23 @@ class Message extends BaseMessage {
 
     private $_from;
 
-    private $_to;
+    private $_to = [];
 
     private $_replyTo;
 
-    private $_cc;
+    private $_cc = [];
 
-    private $_bcc;
+    private $_bcc = [];
 
     private $_subject;
 
     private $_textBody;
 
     private $_htmlBody;
+
+    private $_attachments;
+
+    private $_inline_attachments;
 
     /**
      * @inheritdoc
@@ -80,7 +84,7 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setTo($to) {
-        if (!is_array($to)){
+        if (!is_array($to)) {
             $to = [$to => ''];
         }
         $this->_to = $to;
@@ -113,6 +117,9 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setCc($cc) {
+        if (!is_array($cc)) {
+            $cc = [$cc => ''];
+        }
         $this->_cc = $cc;
         return $this;
     }
@@ -128,6 +135,9 @@ class Message extends BaseMessage {
      * @inheritdoc
      */
     public function setBcc($bcc) {
+        if (!is_array($bcc)){
+            $bcc = [$bcc => ''];
+        }
         $this->_bcc = $bcc;
         return $this;
     }
@@ -181,28 +191,52 @@ class Message extends BaseMessage {
     * @inheritdoc
     */
     public function attach($fileName, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : \yii\helpers\FileHelper::getMimeType($fileName),
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
+            'content' => base64_encode(file_get_contents($fileName)),
+        ];
+        $this->_attachments[] = $attachment;
+        return $this;
     }
 
     /**
     * @inheritdoc
     */
     public function attachContent($content, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : 'text/plain',
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
+            'content' => base64_encode($content),
+        ];
+        $this->_attachments[] = $attachment;
+        return $this;
     }
 
     /**
     * @inheritdoc
     */
     public function embed($fileName, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : \yii\helpers\FileHelper::getMimeType($fileName),
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
+            'content' => base64_encode(file_get_contents($fileName)),
+        ];
+        $this->_inline_attachments[] = $attachment;
+        return 'cid:' . $attachment['Filename'];
     }
 
     /**
     * @inheritdoc
     */
     public function embedContent($content, array $options = []) {
-        throw new Exception('Not Implemented');
+        $attachment = [
+            'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : 'text/plain',
+            'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
+            'content' => base64_encode($content),
+        ];
+        $this->_inline_attachments[] = $attachment;
+        return 'cid:' . $attachment['Filename'];
     }
 
     /**
@@ -214,4 +248,19 @@ class Message extends BaseMessage {
             . $this->getTextBody();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAttachments()
+    {
+        return $this->_attachments;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInlineAttachments()
+    {
+        return $this->_inline_attachments;
+    }
 }
