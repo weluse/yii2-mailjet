@@ -11,7 +11,8 @@ use yii\base\Exception;
  *
  * @package weluse/mailjet
  */
-class Message extends BaseMessage {
+class Message extends BaseMessage
+{
 
     private $_charset;
 
@@ -38,29 +39,32 @@ class Message extends BaseMessage {
     /**
      * @inheritdoc
      */
-    public function getCharset() {
+    public function getCharset()
+    {
         return $this->_charset;
     }
 
     /**
      * @inheritdoc
      */
-    public function setCharset($charset) {
+    public function setCharset($charset)
+    {
         $this->_charset = $charset;
     }
 
     /**
      * @inheritdoc
      */
-    public function getFrom() {
+    public function getFrom()
+    {
         return $this->_from;
     }
 
     /**
      * @inheritdoc
      */
-    public function setFrom($from) {
-
+    public function setFrom($from)
+    {
         if (is_array($from)) {
             $this->_from = [
                 'FromEmail' => key($from),
@@ -76,14 +80,16 @@ class Message extends BaseMessage {
     /**
      * @inheritdoc
      */
-    public function getTo() {
+    public function getTo()
+    {
         return $this->_to;
     }
 
     /**
      * @inheritdoc
      */
-    public function setTo($to) {
+    public function setTo($to)
+    {
         if (!is_array($to)) {
             $to = [$to => ''];
         }
@@ -94,14 +100,16 @@ class Message extends BaseMessage {
     /**
      * @inheritdoc
      */
-    public function getReplyTo() {
+    public function getReplyTo()
+    {
         return $this->_replyTo;
     }
 
     /**
      * @inheritdoc
      */
-    public function setReplyTo($replyTo) {
+    public function setReplyTo($replyTo)
+    {
         $this->_replyTo = $replyTo;
         return $this;
     }
@@ -109,14 +117,16 @@ class Message extends BaseMessage {
     /**
      * @inheritdoc
      */
-    public function getCc() {
+    public function getCc()
+    {
         return $this->_cc;
     }
 
     /**
      * @inheritdoc
      */
-    public function setCc($cc) {
+    public function setCc($cc)
+    {
         if (!is_array($cc)) {
             $cc = [$cc => ''];
         }
@@ -127,15 +137,17 @@ class Message extends BaseMessage {
     /**
      * @inheritdoc
      */
-    public function getBcc() {
+    public function getBcc()
+    {
         return $this->_bcc;
     }
 
     /**
      * @inheritdoc
      */
-    public function setBcc($bcc) {
-        if (!is_array($bcc)){
+    public function setBcc($bcc)
+    {
+        if (!is_array($bcc)) {
             $bcc = [$bcc => ''];
         }
         $this->_bcc = $bcc;
@@ -145,14 +157,16 @@ class Message extends BaseMessage {
     /**
      * @inheritdoc
      */
-    public function getSubject() {
+    public function getSubject()
+    {
         return $this->_subject;
     }
 
     /**
      * @inheritdoc
      */
-    public function setSubject($subject) {
+    public function setSubject($subject)
+    {
         $this->_subject = $subject;
         return $this;
     }
@@ -160,37 +174,42 @@ class Message extends BaseMessage {
     /**
      * return the plain text for the mail
      */
-     public function getTextBody() {
-         return $this->_textBody;
-     }
+    public function getTextBody()
+    {
+        return $this->_textBody;
+    }
 
     /**
-    * @inheritdoc
-    */
-    public function setTextBody($text) {
+     * @inheritdoc
+     */
+    public function setTextBody($text)
+    {
         $this->_textBody = $text;
         return $this;
     }
 
     /**
-    * return the html text for the mail
-    */
-    public function getHtmlBody() {
+     * return the html text for the mail
+     */
+    public function getHtmlBody()
+    {
         return $this->_htmlBody;
     }
 
     /**
-    * @inheritdoc
-    */
-    public function setHtmlBody($html) {
+     * @inheritdoc
+     */
+    public function setHtmlBody($html)
+    {
         $this->_htmlBody = $html;
         return $this;
     }
 
     /**
-    * @inheritdoc
-    */
-    public function attach($fileName, array $options = []) {
+     * @inheritdoc
+     */
+    public function attach($fileName, array $options = [])
+    {
         $attachment = [
             'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : \yii\helpers\FileHelper::getMimeType($fileName),
             'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
@@ -201,9 +220,10 @@ class Message extends BaseMessage {
     }
 
     /**
-    * @inheritdoc
-    */
-    public function attachContent($content, array $options = []) {
+     * @inheritdoc
+     */
+    public function attachContent($content, array $options = [])
+    {
         $attachment = [
             'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : 'text/plain',
             'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
@@ -214,9 +234,10 @@ class Message extends BaseMessage {
     }
 
     /**
-    * @inheritdoc
-    */
-    public function embed($fileName, array $options = []) {
+     * @inheritdoc
+     */
+    public function embed($fileName, array $options = [])
+    {
         $attachment = [
             'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : \yii\helpers\FileHelper::getMimeType($fileName),
             'Filename' => isset($options['fileName']) ? $options['fileName'] : basename($fileName),
@@ -227,9 +248,10 @@ class Message extends BaseMessage {
     }
 
     /**
-    * @inheritdoc
-    */
-    public function embedContent($content, array $options = []) {
+     * @inheritdoc
+     */
+    public function embedContent($content, array $options = [])
+    {
         $attachment = [
             'Content-type' => isset($options['Content-type']) ? $options['Content-type'] : 'text/plain',
             'Filename' => isset($options['fileName']) ? $options['fileName'] : 'attachment.txt',
@@ -240,9 +262,10 @@ class Message extends BaseMessage {
     }
 
     /**
-    * @inheritdoc
-    */
-    public function toString() {
+     * @inheritdoc
+     */
+    public function toString()
+    {
         return implode(',', $this->getTo()) . "\n"
             . $this->getSubject() . "\n"
             . $this->getTextBody();
