@@ -15,7 +15,6 @@ use yii\validators\UrlValidator;
 
 class Mailer extends BaseMailer
 {
-
     private $_mailjet;
 
     private $_apikey;
@@ -41,20 +40,19 @@ class Mailer extends BaseMailer
         'unsub',
     ];
 
-   /**
-    * @var string message default class name.
-    */
+    /**
+     * @var string message default class name.
+     */
     public $messageClass = 'weluse\mailjet\Message';
 
-   /**
-    *  readonly
-    * @var $_response Mailjet\Response
-    */
+    /**
+     *  readonly
+     * @var $_response Mailjet\Response
+     */
     private $_response;
 
     public function init()
     {
-
         if (!$this->_apikey) {
             throw new InvalidConfigException(sprintf('"%s::apikey" cannot be null.', get_class($this)));
         }
@@ -77,19 +75,17 @@ class Mailer extends BaseMailer
      * @param string $secret
      * @throws InvalidConfigException
      */
-     public function setSecret($secret)
-     {
-
-         if (!is_string($secret)) {
-             throw new InvalidConfigException(sprintf('"%s::secret" should be a string, "%s" given.', get_class($this), gettype($apikey)));
-         }
-         $trimmedSecret = trim($secret);
-         if (!strlen($trimmedSecret) > 0) {
-             throw new InvalidConfigException(sprintf('"%s::secret" length should be greater than 0.', get_class($this)));
-         }
-         $this->_secret = $trimmedSecret;
-
-     }
+    public function setSecret($secret)
+    {
+        if (!is_string($secret)) {
+            throw new InvalidConfigException(sprintf('"%s::secret" should be a string, "%s" given.', get_class($this), gettype($apikey)));
+        }
+        $trimmedSecret = trim($secret);
+        if (!strlen($trimmedSecret) > 0) {
+            throw new InvalidConfigException(sprintf('"%s::secret" length should be greater than 0.', get_class($this)));
+        }
+        $this->_secret = $trimmedSecret;
+    }
 
     /**
      * Sets the API key for Mailjet
@@ -114,7 +110,6 @@ class Mailer extends BaseMailer
      */
     public function createMailjet()
     {
-
         $mj = new \Mailjet\Client($this->_apikey, $this->_secret);
 
         $this->_mailjet = $mj;
@@ -130,7 +125,6 @@ class Mailer extends BaseMailer
      */
     protected function sendMessage($message)
     {
-
         $to = $cc = $bcc = [];
 
         foreach ($message->to as $email => $name) {
@@ -149,7 +143,6 @@ class Mailer extends BaseMailer
             $cc[] = $address;
         }
 
-
         foreach ($message->bcc as $email => $name) {
             $address = '<' . $email . '>';
             if (!empty($name)) {
@@ -158,16 +151,15 @@ class Mailer extends BaseMailer
             $bcc[] = $address;
         }
 
-
         $body = [
             'Subject' => $message->subject,
             'Text-part' => $message->textBody,
             'Html-part' => $message->htmlBody,
-            'To' => join(', ',$to),
+            'To' => join(', ', $to),
         ];
 
         if ($cc) {
-            $body['Cc'] = join(', ',$cc);
+            $body['Cc'] = join(', ', $cc);
         }
         if ($bcc) {
             $body['Bcc'] = join(', ', $bcc);
@@ -181,7 +173,7 @@ class Mailer extends BaseMailer
         }
 
         //Adds Reply-To to header
-        if(!empty($message->replyTo)) {
+        if (!empty($message->replyTo)) {
             $body['Headers']['Reply-to'] = $message->replyTo;
         }
 
@@ -194,7 +186,6 @@ class Mailer extends BaseMailer
 
     public function setTracking($tracking)
     {
-
         if (is_array($tracking)) {
 
             $urlValidator = new UrlValidator;
@@ -212,7 +203,6 @@ class Mailer extends BaseMailer
                     throw new InvalidConfigException(sprintf('the %s event is not supported', $event));
                 }
             }
-
         } else {
             throw new InvalidConfigException('The trackingActions must be an array');
         }
@@ -270,7 +260,6 @@ class Mailer extends BaseMailer
         $eventCallbackurl = Resources::$Eventcallbackurl;
         $eventCallbackurl[1] = $event;
 
-        $response = $this->_mailjet->delete($eventCallbackurl);
+        $this->_mailjet->delete($eventCallbackurl);
     }
-
 }
