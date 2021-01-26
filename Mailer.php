@@ -2,10 +2,10 @@
 /**
  * Contains the Mailer class
  *
- * @package weluse/mailjet
+ * @package Jafarili/mailjet
  */
 
-namespace weluse\mailjet;
+namespace Jafarili\mailjet;
 
 use Mailjet\Resources;
 use yii\base\InvalidConfigException;
@@ -43,7 +43,7 @@ class Mailer extends BaseMailer
     /**
      * @var string message default class name.
      */
-    public $messageClass = 'weluse\mailjet\Message';
+    public $messageClass = 'Jafarili\mailjet\Message';
 
     /**
      *  readonly
