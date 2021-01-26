@@ -53,6 +53,11 @@ class Mailer extends BaseMailer
 
     public function init()
     {
+        if ($this->_mailjet) {
+            // client already defined, no need to new client
+            return;
+        }
+
         if (!$this->_apikey) {
             throw new InvalidConfigException(sprintf('"%s::apikey" cannot be null.', get_class($this)));
         }
@@ -103,6 +108,20 @@ class Mailer extends BaseMailer
             throw new InvalidConfigException(sprintf('"%s::apikey" length should be greater than 0.', get_class($this)));
         }
         $this->_apikey = $trimmedApikey;
+    }
+
+    /**
+     * Sets the Mailjet client
+     *
+     * @param \Mailjet\Client $mailjet the Mailjet Client
+     * @throws InvalidConfigException
+     */
+    public function setMailjet($mailjet)
+    {
+        if (!$mailjet instanceof \Mailjet\Client) {
+            throw new InvalidConfigException(sprintf('"%s::mailjet" should be an instance of \Mailjet\Client, "%s" given.', get_class($this), gettype($mailjet)));
+        }
+        $this->_mailjet = $mailjet;
     }
 
     /**
