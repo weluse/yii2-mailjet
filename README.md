@@ -23,7 +23,7 @@ add/replace this in your config under the components key.
 ```
 'components' => [
   'mailer' => [
-    'class' => 'jafarili\mailjet\Mailer',
+    'class' => 'Jafarili\mailjet\Mailer',
     'apikey' => 'yourApiKey',
     'secret' => 'yourSecret',
   ],
@@ -35,7 +35,7 @@ Or set a MailJet client instead:
 ```
 'components' => [
   'mailer' => [
-    'class' => 'jafarili\mailjet\Mailer',
+    'class' => 'Jafarili\mailjet\Mailer',
     'mailjet' => new \Mailjet\Client('yourApiKey', 'yourSecret'),
   ],
 ],
@@ -77,7 +77,7 @@ Write the tracking item to the mailer config.
 ```
 'components' => [
   'mailer' => [
-    'class' => 'jafarili\mailjet\Mailer',
+    'class' => 'Jafarili\mailjet\Mailer',
     'apikey' => 'yourApiKey',
     'secret' => 'yourSecret',
     'tracking' => [
