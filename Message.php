@@ -1,6 +1,6 @@
 <?php
 
-namespace weluse\mailjet;
+namespace Jafarili\mailjet;
 
 use Mailjet\Resources;
 use yii\mail\BaseMessage;
@@ -9,7 +9,7 @@ use yii\base\Exception;
 /**
  * Contains the Message class
  *
- * @package weluse/mailjet
+ * @package Jafarili/mailjet
  */
 class Message extends BaseMessage
 {

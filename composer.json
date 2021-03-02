@@ -1,5 +1,5 @@
 {
-    "name": "weluse/yii2-mailjet",
+    "name": "jafarili/yii2-mailjet",
     "description": "Mailjet client",
     "type": "library",
     "require": {
@@ -8,6 +8,6 @@
     "license": "MIT",
     "minimum-stability": "beta",
     "autoload": {
-      "psr-4": { "weluse\\mailjet\\": "" }
+      "psr-4": { "Jafarili\\mailjet\\": "" }
     }
 }
